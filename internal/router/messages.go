@@ -6,6 +6,7 @@ const (
 	SEARCH_EMOJI       = "🔎"
 	UPWARD_TREND_EMOJI = "📈"
 	ID_EMOJI           = "🆔"
+	GUN_EMOJI          = "🔫"
 )
 
 func InfoMessage() *discordgo.MessageEmbed {
@@ -52,6 +53,11 @@ func ReactionMessage() *discordgo.MessageEmbed {
 			{
 				Name:   SEARCH_EMOJI,
 				Value:  "Reacting with this emoji will search for all Rust servers matching your search term.",
+				Inline: false,
+			},
+			{
+				Name:   GUN_EMOJI,
+				Value:  "Reacting with this emoji will prompts for details on a raid and provide the most cost effective method.",
 				Inline: false,
 			},
 		},

@@ -1,6 +1,7 @@
 package router
 
 import (
+	"fmt"
 	"log"
 	"regexp"
 	"time"
@@ -41,6 +42,39 @@ func RustHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 				log.Print(err)
 			}
 
+		})
+		if err != nil {
+			log.Print(err)
+		}
+
+		err = p.Widget.Handle(GUN_EMOJI, func(w *dgwidgets.Widget, r *discordgo.MessageReaction) {
+			if msg, err := w.QueryInput("What is the material of the structure", r.UserID, 15*time.Second); err == nil {
+				material := msg.Content
+				// Identify better way to validate material
+				if material == "wood" || material == "stone" {
+					if msg, err := w.QueryInput("What the structure?", r.UserID, 15*time.Second); err == nil {
+						structure := msg.Content
+						// Identify better way to validate structure
+						if structure == "door" || structure == "wall" {
+							combo := fmt.Sprintf("Easy %s %s", material, structure)
+							_, err := s.ChannelMessageSend(m.ChannelID, combo)
+							if err != nil {
+								log.Print(err)
+							}
+						} else {
+							_, err := s.ChannelMessageSend(m.ChannelID, "Unsupported structure")
+							if err != nil {
+								log.Print(err)
+							}
+						}
+					}
+				} else {
+					_, err := s.ChannelMessageSend(m.ChannelID, "Unsupported material")
+					if err != nil {
+						log.Print(err)
+					}
+				}
+			}
 		})
 		if err != nil {
 			log.Print(err)
